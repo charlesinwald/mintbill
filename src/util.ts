@@ -108,7 +108,7 @@ export function generatePdf(invoiceData: any) {
   const items = invoiceData.items || [];
   const tableColumns = ["Item", "Quantity", "Price", "Total"];
   const tableRows = items.map((item: any) => {
-    const price = Number(item.price) || 0;
+    const price = Number(item.unitPrice) || 0;
     const qty = Number(item.quantity) || 0;
     return [
       item.description || "N/A",
@@ -133,7 +133,7 @@ export function generatePdf(invoiceData: any) {
 
   // --- Total Amount ---
   const total = items.reduce((sum: number, item: any) => {
-    const price = Number(item.price) || 0;
+    const price = Number(item.unitPrice) || 0;
     const qty = Number(item.quantity) || 0;
     return sum + price * qty;
   }, 0);

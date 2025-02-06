@@ -58,8 +58,11 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       backgroundImage: {
-        "grid-pattern": 'url("/grid-pattern.svg")',
-        "grid-pattern-light": 'url("/grid-pattern-light.svg")',
+        "grid-pattern": "url('/grid-pattern.svg')",
+        "grid-pattern-light": "url('/grid-pattern-light.svg')",
+        "dots-pattern": "radial-gradient(transparent 1px, white 1px)",
+        "dots-pattern-dark":
+          "radial-gradient(transparent 1px, rgb(255, 255, 255, 0.1) 1px)",
       },
     },
   },

@@ -4,6 +4,13 @@ import { Button } from "@/components/ui/button";
 import invoiceStepsJson from "./invoiceStructure.json";
 import type { StepItem } from "@/components/ui/stepper";
 import { generatePdf } from "./util";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./components/ui/dotted-dialog";
 
 interface FieldDefinition {
   name: string;
@@ -35,13 +42,16 @@ interface InvoiceData {
   [key: string]: any; // For any additional dynamic fields
 }
 
-const handleSubmit = (invoiceData: InvoiceData) => {
+const handleSubmit = (
+  invoiceData: InvoiceData,
+  setIsSubmitDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   // This is where you'd:
   //  - Generate a PDF using invoiceData
   //  - Or send invoiceData to your backend via fetch/axios
   console.log("Final Invoice Data:", invoiceData);
   generatePdf(invoiceData);
-  alert("Invoice creation complete! Check console for data.");
+  setIsSubmitDialogOpen(true);
 };
 
 export default function App() {
@@ -59,9 +69,21 @@ export default function App() {
     })
   );
 
+  const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
+
   return (
     <div className="flex w-full h-screen flex-col gap-4 p-4">
       <div className="flex-1 flex flex-col gap-4 p-4">
+        <Dialog open={isSubmitDialogOpen} onOpenChange={setIsSubmitDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>PDF Created</DialogTitle>
+              <DialogDescription>
+                Your PDF has been successfully created.
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
         <Stepper initialStep={0} steps={steps}>
           {/* <Footer /> */}
           {steps.map((stepProps) => {
@@ -73,6 +95,7 @@ export default function App() {
                   setInvoiceData={setInvoiceData}
                   invoiceData={invoiceData}
                   currentStepId={stepProps.meta.stepId}
+                  setIsSubmitDialogOpen={setIsSubmitDialogOpen}
                 />
               </Step>
             );
@@ -88,11 +111,13 @@ function DynamicStepContent({
   invoiceData,
   setInvoiceData,
   currentStepId,
+  setIsSubmitDialogOpen,
 }: {
   stepDefinition: StepDefinition;
   invoiceData: InvoiceData;
   setInvoiceData: React.Dispatch<React.SetStateAction<InvoiceData>>;
   currentStepId: string;
+  setIsSubmitDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   console.log("Current Step ID:", currentStepId);
 
@@ -121,7 +146,10 @@ function DynamicStepContent({
   return (
     <div className="bg-secondary text-primary flex flex-col flex-1 gap-4 items-center justify-start rounded-md border p-4 overflow-y-auto">
       <div className="flex w-full justify-end">
-        <Footer invoiceData={invoiceData} />
+        <Footer
+          invoiceData={invoiceData}
+          setIsSubmitDialogOpen={setIsSubmitDialogOpen}
+        />
       </div>
       <h2 className="text-xl font-bold">{stepDefinition.title}</h2>
       <p className="text-sm">{stepDefinition.description}</p>
@@ -448,7 +476,13 @@ function FormField({
   );
 }
 
-function Footer({ invoiceData }: { invoiceData: InvoiceData }) {
+function Footer({
+  invoiceData,
+  setIsSubmitDialogOpen,
+}: {
+  invoiceData: InvoiceData;
+  setIsSubmitDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const {
     nextStep,
     prevStep,
@@ -491,7 +525,7 @@ function Footer({ invoiceData }: { invoiceData: InvoiceData }) {
               className="bg-accent text-accent-foreground hover:bg-accent/90"
               onClick={() => {
                 if (isLastStep) {
-                  handleSubmit(invoiceData);
+                  handleSubmit(invoiceData, setIsSubmitDialogOpen);
                 } else {
                   nextStep();
                 }
