@@ -1,0 +1,262 @@
+{
+    "invoiceCreationFlow": {
+      "steps": [
+        {
+          "stepId": "basic-info",
+          "title": "Basic Invoice Info",
+          "description": "Provide the fundamental invoice details.",
+          "fields": [
+            {
+              "name": "invoiceNumber",
+              "label": "Invoice Number",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "issueDate",
+              "label": "Issue Date",
+              "type": "date",
+              "required": true
+            },
+            {
+              "name": "dueDate",
+              "label": "Due Date",
+              "type": "date",
+              "required": true
+            },
+            {
+              "name": "currency",
+              "label": "Currency",
+              "type": "string",
+              "defaultValue": "USD",
+              "required": true
+            }
+          ]
+        },
+        {
+          "stepId": "seller-details",
+          "title": "Seller Details",
+          "description": "Information about the seller or your business.",
+          "fields": [
+            {
+              "name": "sellerCompanyName",
+              "label": "Company Name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "sellerStreet",
+              "label": "Street",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "sellerCity",
+              "label": "City",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "sellerState",
+              "label": "State",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "sellerZipCode",
+              "label": "Zip/Postal Code",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "sellerCountry",
+              "label": "Country",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "sellerPhone",
+              "label": "Phone Number",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "sellerEmail",
+              "label": "Email Address",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "stepId": "buyer-details",
+          "title": "Buyer Details",
+          "description": "Information about the buyer or client.",
+          "fields": [
+            {
+              "name": "buyerName",
+              "label": "Buyer Name / Contact Person",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "buyerCompanyName",
+              "label": "Buyer Company Name (optional)",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "buyerStreet",
+              "label": "Street",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "buyerCity",
+              "label": "City",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "buyerState",
+              "label": "State",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "buyerZipCode",
+              "label": "Zip/Postal Code",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "buyerCountry",
+              "label": "Country",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "buyerPhone",
+              "label": "Phone Number",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "buyerEmail",
+              "label": "Email Address",
+              "type": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "stepId": "items",
+          "title": "Invoice Items",
+          "description": "Add products or services to this invoice.",
+          "fields": [
+            {
+              "name": "items",
+              "label": "Line Items",
+              "type": "array",
+              "itemStructure": {
+                "itemType": {
+                  "type": "string",
+                  "options": ["service", "product"],
+                  "required": true
+                },
+                "description": {
+                  "type": "string",
+                  "required": true
+                },
+                "quantity": {
+                  "type": "number",
+                  "required": true
+                },
+                "unitPrice": {
+                  "type": "number",
+                  "required": true
+                },
+                "itemLevelDiscount": {
+                  "type": "number",
+                  "required": false
+                },
+                "itemTaxRates": {
+                  "type": "array",
+                  "itemStructure": {
+                    "name": {
+                      "type": "string",
+                      "required": true
+                    },
+                    "rate": {
+                      "type": "number",
+                      "required": true
+                    }
+                  }
+                }
+              },
+              "required": true
+            }
+          ]
+        },
+        {
+          "stepId": "invoice-level-discounts-taxes",
+          "title": "Invoice-Level Discounts & Taxes",
+          "description": "Apply any overall discounts or taxes to the invoice.",
+          "fields": [
+            {
+              "name": "invoiceLevelDiscount",
+              "label": "Invoice-Level Discount",
+              "type": "object",
+              "structure": {
+                "description": {
+                  "type": "string",
+                  "required": false
+                },
+                "value": {
+                  "type": "number",
+                  "required": false
+                }
+              },
+              "required": false
+            },
+            {
+              "name": "invoiceLevelTaxes",
+              "label": "Invoice-Level Taxes",
+              "type": "array",
+              "itemStructure": {
+                "name": {
+                  "type": "string",
+                  "required": true
+                },
+                "rate": {
+                  "type": "number",
+                  "required": true
+                }
+              },
+              "required": false
+            }
+          ]
+        },
+        {
+          "stepId": "notes-terms",
+          "title": "Notes & Terms",
+          "description": "Specify additional notes or terms and conditions.",
+          "fields": [
+            {
+              "name": "notes",
+              "label": "Notes",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "termsAndConditions",
+              "label": "Terms and Conditions",
+              "type": "string",
+              "required": false
+            }
+          ]
+        }
+      ]
+    }
+  }
+  
