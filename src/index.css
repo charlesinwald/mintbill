@@ -4,7 +4,16 @@
 
 @import "tailwindcss";
 
+/* Define custom CSS variables for the mint color scheme and slate background */
 :root {
+  --mint-lightest: #92ddc8;
+  --mint-light: #81b69d;
+  --mint-default: #5aa17f;
+  --mint-dark: #137a63;
+  --mint-darkest: #0a3a2a;
+  --slate-background: #2f3e46; /* Example slate color */
+  --slate-foreground: #e0e0e0; /* Light text color for contrast */
+
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -17,19 +26,14 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* background-color: var(--mint-lightest); */
+  background-color: var(--mint-darkest);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
+/* Apply the color scheme to various elements */
 body {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -37,44 +41,114 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--slate-background);
+  color: var(--slate-foreground);
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+#app-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px; /* Adjust as needed */
+  padding: 1rem;
+  box-sizing: border-box;
+  flex-grow: 1; /* Allow the container to grow and fill the space */
+  overflow-x: hidden; /* Prevent horizontal overflow within the container */
+}
+
+a {
+  color: var(--mint-default);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--mint-dark);
 }
 
 button {
+  background-color: var(--mint-default);
+  color: var(--slate-foreground);
+  border: 1px solid var(--mint-dark);
   border-radius: 8px;
-  border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.25s, border-color 0.25s;
 }
+
 button:hover {
-  border-color: #646cff;
+  background-color: var(--mint-dark);
+  border-color: var(--mint-darkest);
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+input,
+select {
+  border: 1px solid var(--mint-light);
+  border-radius: 4px;
+  padding: 0.5em;
+  font-size: 1em;
+  color: var(--slate-foreground);
+  background-color: var(--slate-background);
+  width: 100%; /* Ensure inputs are responsive */
+}
+
+input:focus,
+select:focus {
+  border-color: var(--mint-dark);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--mint-dark);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--slate-foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--slate-background);
+    color: var(--slate-foreground);
   }
+
+  a {
+    color: var(--mint-light);
+  }
+
   a:hover {
-    color: #747bff;
+    color: var(--mint-lightest);
   }
+
   button {
-    background-color: #f9f9f9;
+    background-color: var(--mint-dark);
+    color: var(--slate-foreground);
+  }
+
+  button:hover {
+    background-color: var(--mint-darkest);
+  }
+
+  input,
+  select {
+    background-color: var(--slate-background);
+    color: var(--slate-foreground);
+  }
+
+  input:focus,
+  select:focus {
+    box-shadow: 0 0 0 2px var(--mint-light);
   }
 }
 
@@ -140,4 +214,12 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden; /* Prevent horizontal overflow */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit; /* Ensure all elements use border-box */
 }
