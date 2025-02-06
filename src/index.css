@@ -28,6 +28,7 @@
   -moz-osx-font-smoothing: grayscale;
   /* background-color: var(--mint-lightest); */
   background-color: var(--mint-darkest);
+  width: 100vw;
 }
 
 /* Apply the color scheme to various elements */
@@ -46,6 +47,9 @@ body {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+}
+#root {
+  width: 100vw;
 }
 
 #app-container {

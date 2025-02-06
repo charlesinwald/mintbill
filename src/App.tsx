@@ -11,7 +11,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./components/ui/dotted-dialog";
-
 interface FieldDefinition {
   name: string;
   label: string;
