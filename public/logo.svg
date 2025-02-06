@@ -1,0 +1,40 @@
+<svg 
+  version="1.1" 
+  width="64" 
+  height="64" 
+  viewBox="0 0 64 64" 
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title>MintBill Favicon</title>
+  
+  <!-- Background rectangle (the 'bill' shape) -->
+  <rect 
+    x="8" 
+    y="16" 
+    width="48" 
+    height="32" 
+    rx="6" 
+    fill="#3EB489" 
+  />
+  
+  <!-- White circle in the center -->
+  <circle 
+    cx="32" 
+    cy="32" 
+    r="10" 
+    fill="#FFFFFF" 
+  />
+  
+  <!-- "MB" text -->
+  <text 
+    x="32" 
+    y="36" 
+    font-family="sans-serif" 
+    font-size="12" 
+    font-weight="bold" 
+    text-anchor="middle" 
+    fill="#2D6E43"
+  >
+    MB
+  </text>
+</svg>
