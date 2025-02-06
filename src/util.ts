@@ -1,8 +1,14 @@
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { UserOptions } from "jspdf-autotable";
+
+// Add this interface to extend jsPDF
+interface jsPDFWithAutoTable extends jsPDF {
+  autoTable: (options: UserOptions) => void;
+}
 
 export function generatePdf(invoiceData: any) {
-  const doc = new jsPDF();
+  const doc = new jsPDF() as jsPDFWithAutoTable;
 
   // --- General Settings ---
   const leftMargin = 20;
@@ -29,9 +35,17 @@ export function generatePdf(invoiceData: any) {
   doc.setFont("helvetica", "normal");
   currentY += 15;
 
-  doc.text(`Invoice Number: ${invoiceData.invoiceNumber || "N/A"}`, leftMargin, currentY);
+  doc.text(
+    `Invoice Number: ${invoiceData.invoiceNumber || "N/A"}`,
+    leftMargin,
+    currentY
+  );
   currentY += 6;
-  doc.text(`Issue Date: ${invoiceData.issueDate || "N/A"}`, leftMargin, currentY);
+  doc.text(
+    `Issue Date: ${invoiceData.issueDate || "N/A"}`,
+    leftMargin,
+    currentY
+  );
   currentY += 6;
   doc.text(`Due Date: ${invoiceData.dueDate || "N/A"}`, leftMargin, currentY);
 
@@ -52,7 +66,9 @@ export function generatePdf(invoiceData: any) {
   doc.text(invoiceData.sellerStreet || "N/A", leftMargin, currentY);
   currentY += 6;
   doc.text(
-    `${invoiceData.sellerCity || ""}, ${invoiceData.sellerState || ""} ${invoiceData.sellerZipCode || ""}`,
+    `${invoiceData.sellerCity || ""}, ${invoiceData.sellerState || ""} ${
+      invoiceData.sellerZipCode || ""
+    }`,
     leftMargin,
     currentY
   );
@@ -74,7 +90,9 @@ export function generatePdf(invoiceData: any) {
   doc.text(invoiceData.buyerStreet || "N/A", leftMargin, currentY);
   currentY += 6;
   doc.text(
-    `${invoiceData.buyerCity || ""}, ${invoiceData.buyerState || ""} ${invoiceData.buyerZipCode || ""}`,
+    `${invoiceData.buyerCity || ""}, ${invoiceData.buyerState || ""} ${
+      invoiceData.buyerZipCode || ""
+    }`,
     leftMargin,
     currentY
   );
@@ -121,7 +139,9 @@ export function generatePdf(invoiceData: any) {
   }, 0);
 
   doc.setFont("helvetica", "bold");
-  doc.text(`Total Amount: $${total.toFixed(2)}`, 180, currentY, { align: "right" });
+  doc.text(`Total Amount: $${total.toFixed(2)}`, 180, currentY, {
+    align: "right",
+  });
   doc.setFont("helvetica", "normal");
 
   // --- Notes ---

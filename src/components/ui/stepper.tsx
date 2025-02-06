@@ -1009,7 +1009,7 @@ function StepLabel({
       )}
       {!!description && (
         <span
-          className={ny(
+          className={cn(
             "stepper__step-description",
             "text-muted-foreground",
             descriptionVariants({ size }),
