@@ -71,8 +71,9 @@ export default function App() {
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
 
   return (
-    <div className="flex w-full h-screen flex-col gap-4 p-4">
-      <div className="flex-1 flex flex-col gap-4 p-4">
+    <div className="min-h-screen w-full bg-emerald-900 overflow-auto">
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
+      <div className="relative z-10 flex flex-col gap-4 p-4 min-h-screen">
         <Dialog open={isSubmitDialogOpen} onOpenChange={setIsSubmitDialogOpen}>
           <DialogContent>
             <DialogHeader>
@@ -143,61 +144,73 @@ function DynamicStepContent({
   };
 
   return (
-    <div className="bg-secondary text-primary flex flex-col flex-1 gap-4 items-center justify-start rounded-md border p-4 overflow-y-auto">
-      <div className="flex w-full justify-end">
-        <Footer
-          invoiceData={invoiceData}
-          setIsSubmitDialogOpen={setIsSubmitDialogOpen}
-        />
-      </div>
-      <h2 className="text-xl font-bold">{stepDefinition.title}</h2>
-      <p className="text-sm">{stepDefinition.description}</p>
-
-      {/* Render fields dynamically */}
-      <div className="w-full flex flex-col gap-2">
-        {stepDefinition.fields.map((field: FieldDefinition) => (
-          <FormField
-            key={field.name}
-            field={field}
+    <div className="flex flex-col flex-1 gap-4 items-center justify-start overflow-y-auto">
+      <div className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-md shadow-xl shadow-black/20 animate-page-in-up">
+        <div className="flex w-full justify-end p-2">
+          <Footer
             invoiceData={invoiceData}
-            setInvoiceData={setInvoiceData}
+            setIsSubmitDialogOpen={setIsSubmitDialogOpen}
           />
-        ))}
-      </div>
+        </div>
+        <div className="px-4 pb-4">
+          <h2 className="text-xl font-bold text-white drop-shadow-md">
+            {stepDefinition.title}
+          </h2>
+          <p className="text-sm text-white/80">{stepDefinition.description}</p>
 
-      {/* Conditionally render the section only on the invoice level slide */}
-      {currentStepId === "invoice-level-discounts-taxes" && (
-        <>
-          "Invoice Level Discounts and Taxes"
-          <div className="w-full flex flex-col gap-2 mt-4">
-            <label className="font-medium text-primary-dark">
-              Invoice Discount
-            </label>
-            <input
-              className="border border-primary-light rounded-md p-2"
-              type="number"
-              step="0.01"
-              value={invoiceData.invoiceDiscount}
-              onChange={(e) =>
-                handleInvoiceDiscountChange(parseFloat(e.target.value))
-              }
-            />
-
-            <label className="font-medium text-primary-dark">
-              Invoice Taxes
-            </label>
-            <input
-              className="border border-primary-light rounded-md p-2"
-              type="number"
-              step="0.01"
-              value={invoiceData.invoiceTaxes}
-              onChange={(e) =>
-                handleInvoiceTaxesChange(parseFloat(e.target.value))
-              }
-            />
+          {/* Render fields dynamically */}
+          <div className="w-full flex flex-col gap-3 mt-4">
+            {stepDefinition.fields.map((field: FieldDefinition) => (
+              <FormField
+                key={field.name}
+                field={field}
+                invoiceData={invoiceData}
+                setInvoiceData={setInvoiceData}
+              />
+            ))}
           </div>
-        </>
-      )}
+
+          {/* Conditionally render the section only on the invoice level slide */}
+          {currentStepId === "invoice-level-discounts-taxes" && (
+            <>
+              <div className="text-white/90 font-semibold mt-6">
+                Invoice Level Discounts and Taxes
+              </div>
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                <div>
+                  <label className="font-medium text-white/90">
+                    Invoice Discount
+                  </label>
+                  <input
+                    className="mt-1 w-full border border-white/[0.08] rounded-md p-2 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
+                    type="number"
+                    step="0.01"
+                    value={invoiceData.invoiceDiscount}
+                    onChange={(e) =>
+                      handleInvoiceDiscountChange(parseFloat(e.target.value))
+                    }
+                  />
+                </div>
+
+                <div>
+                  <label className="font-medium text-white/90">
+                    Invoice Taxes
+                  </label>
+                  <input
+                    className="mt-1 w-full border border-white/[0.08] rounded-md p-2 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
+                    type="number"
+                    step="0.01"
+                    value={invoiceData.invoiceTaxes}
+                    onChange={(e) =>
+                      handleInvoiceTaxesChange(parseFloat(e.target.value))
+                    }
+                  />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -259,20 +272,20 @@ function FormField({
   if (field.type === "array" && field.name === "items") {
     return (
       <div className="flex flex-col gap-4">
-        <label className="font-medium text-primary-dark">
+        <label className="font-medium text-white/90">
           {field.label}
           {field.required ? " *" : ""}
         </label>
 
-        <div className="border border-primary-light rounded-lg p-4 bg-primary-lightest">
+        <div className="border border-white/[0.08] rounded-lg p-4 bg-white/[0.03] backdrop-blur-sm">
           {(invoiceData.items || []).length === 0 ? (
-            <div className="text-center text-primary-dark py-4">
+            <div className="text-center text-white/70 py-4">
               No items added yet. Click the button below to add your first item.
             </div>
           ) : (
             <>
               {/* Header */}
-              <div className="grid grid-cols-12 gap-4 mb-2 font-medium text-sm text-primary-dark">
+              <div className="grid grid-cols-12 gap-4 mb-2 font-medium text-sm text-white/70">
                 <div className="col-span-3">Description</div>
                 <div className="col-span-2">Type</div>
                 <div className="col-span-2">Quantity</div>
@@ -285,11 +298,11 @@ function FormField({
               {(invoiceData.items || []).map((item: any, index: number) => (
                 <div
                   key={index}
-                  className="grid grid-cols-12 gap-4 items-center py-2 border-b border-primary-light last:border-b-0"
+                  className="grid grid-cols-12 gap-4 items-center py-2 border-b border-white/[0.08] last:border-b-0"
                 >
                   <div className="col-span-3">
                     <input
-                      className="w-full px-3 py-2 border border-primary-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary-dark"
+                      className="w-full px-3 py-2 border border-white/[0.08] rounded-md bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
                       type="text"
                       placeholder="Item description"
                       value={item.description || ""}
@@ -300,7 +313,7 @@ function FormField({
                   </div>
                   <div className="col-span-2">
                     <select
-                      className="w-full px-3 py-2 border border-primary-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary-dark"
+                      className="w-full px-3 py-2 border border-white/[0.08] rounded-md bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
                       value={item.itemType || "product"}
                       onChange={(e) =>
                         handleItemChange(index, "itemType", e.target.value)
@@ -312,7 +325,7 @@ function FormField({
                   </div>
                   <div className="col-span-2">
                     <input
-                      className="w-full px-3 py-2 border border-primary-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary-dark"
+                      className="w-full px-3 py-2 border border-white/[0.08] rounded-md bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
                       type="number"
                       min="1"
                       placeholder="Qty"
@@ -328,7 +341,7 @@ function FormField({
                   </div>
                   <div className="col-span-2">
                     <input
-                      className="w-full px-3 py-2 border border-primary-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary-dark"
+                      className="w-full px-3 py-2 border border-white/[0.08] rounded-md bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
                       type="number"
                       step="0.01"
                       placeholder="Unit Price"
@@ -344,7 +357,7 @@ function FormField({
                   </div>
                   <div className="col-span-2">
                     <input
-                      className="w-full px-3 py-2 border border-primary-light rounded-md focus:outline-none focus:ring-2 focus:ring-primary-dark"
+                      className="w-full px-3 py-2 border border-white/[0.08] rounded-md bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
                       type="number"
                       step="0.01"
                       placeholder="Discount"
@@ -360,7 +373,7 @@ function FormField({
                   </div>
                   <div className="col-span-1 text-center">
                     <button
-                      className="text-primary-dark hover:text-primary-darkest p-2 rounded-full hover:bg-primary-lightest"
+                      className="text-white/70 hover:text-white p-2 rounded-full hover:bg-white/[0.05]"
                       onClick={() => removeItem(index)}
                       title="Remove item"
                     >
@@ -385,7 +398,7 @@ function FormField({
 
           <div className="mt-4">
             <button
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary-dark border border-primary-dark rounded-md hover:bg-primary-lightest"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white/80 border border-white/[0.08] rounded-md hover:bg-white/[0.05] backdrop-blur-sm"
               onClick={addItem}
             >
               <svg
@@ -407,7 +420,7 @@ function FormField({
 
         {/* Optional: Show total */}
         {(invoiceData.items || []).length > 0 && (
-          <div className="text-right text-sm text-primary-dark">
+          <div className="text-right text-sm text-white/70">
             Total: {invoiceData.currency || "$"}
             {(invoiceData.items || [])
               .reduce(
@@ -433,7 +446,7 @@ function FormField({
 
   return (
     <div className="flex flex-col">
-      <label className="font-medium" htmlFor={field.name}>
+      <label className="font-medium text-white/90" htmlFor={field.name}>
         {field.label !== "Invoice-Level Discount" &&
           field.label !== "Invoice-Level Taxes" &&
           field.label}
@@ -443,7 +456,7 @@ function FormField({
       {field.type === "string" && (
         <input
           id={field.name}
-          className="border rounded p-1"
+          className="mt-1 border border-white/[0.08] rounded-md p-2 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
           type="text"
           required={field.required}
           value={invoiceData[field.name] ?? field.defaultValue ?? ""}
@@ -453,7 +466,7 @@ function FormField({
       {field.type === "date" && (
         <input
           id={field.name}
-          className="border rounded p-1"
+          className="mt-1 border border-white/[0.08] rounded-md p-2 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
           type="date"
           required={field.required}
           value={invoiceData[field.name] ?? field.defaultValue ?? ""}
@@ -463,7 +476,7 @@ function FormField({
       {field.type === "number" && (
         <input
           id={field.name}
-          className="border rounded p-1"
+          className="mt-1 border border-white/[0.08] rounded-md p-2 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
           type="number"
           required={field.required}
           value={invoiceData[field.name] ?? field.defaultValue ?? ""}
@@ -514,14 +527,15 @@ function Footer({
               disabled={isDisabledStep}
               onClick={prevStep}
               size="sm"
-              variant="outline"
-              className="border-accent text-accent hover:bg-accent/10"
+              variant="gradient"
+              className="from-violet-400 via-teal-400 to-amber-400"
             >
               Prev
             </Button>
             <Button
               size="sm"
-              className="bg-accent text-accent-foreground hover:bg-accent/90"
+              variant="gradient"
+              className="from-amber-400 via-rose-400 to-violet-400"
               onClick={() => {
                 if (isLastStep) {
                   handleSubmit(invoiceData, setIsSubmitDialogOpen);

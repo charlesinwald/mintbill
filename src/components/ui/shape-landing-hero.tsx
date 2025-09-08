@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { MagnetizeButton } from "./magnetize-button";
 
 
 function ElegantShape({
@@ -187,7 +188,7 @@ function HeroGeometric({
             initial="hidden"
             animate="visible"
           >
-            <button onClick={() => router.push("/app")}>Go to app</button>
+            <MagnetizeButton text="Go to app" particleCount={10} attractRadius={50} onClick={() => router.push("/app")}/>
 
             {/* <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
                             Crafting exceptional digital experiences through
