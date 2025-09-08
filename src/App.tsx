@@ -71,7 +71,7 @@ export default function App() {
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
 
   return (
-    <div className="flex w-full h-screen flex-col gap-4 p-4">
+    <div className="flex w-full h-screen flex-col gap-4 p-4 bg-gradient-to-br from-primary-dark via-violet-700 to-rose-700 bg-[length:200%_200%] animate-bg-pan">
       <div className="flex-1 flex flex-col gap-4 p-4">
         <Dialog open={isSubmitDialogOpen} onOpenChange={setIsSubmitDialogOpen}>
           <DialogContent>
@@ -143,61 +143,65 @@ function DynamicStepContent({
   };
 
   return (
-    <div className="bg-secondary text-primary flex flex-col flex-1 gap-4 items-center justify-start rounded-md border p-4 overflow-y-auto">
-      <div className="flex w-full justify-end">
-        <Footer
-          invoiceData={invoiceData}
-          setIsSubmitDialogOpen={setIsSubmitDialogOpen}
-        />
-      </div>
-      <h2 className="text-xl font-bold">{stepDefinition.title}</h2>
-      <p className="text-sm">{stepDefinition.description}</p>
-
-      {/* Render fields dynamically */}
-      <div className="w-full flex flex-col gap-2">
-        {stepDefinition.fields.map((field: FieldDefinition) => (
-          <FormField
-            key={field.name}
-            field={field}
+    <div className="flex flex-col flex-1 gap-4 items-center justify-start overflow-y-auto">
+      <div className="w-full rounded-xl border border-white/10 bg-white/10 backdrop-blur-md shadow-xl shadow-black/20 animate-page-in-up">
+        <div className="flex w-full justify-end p-2">
+          <Footer
             invoiceData={invoiceData}
-            setInvoiceData={setInvoiceData}
+            setIsSubmitDialogOpen={setIsSubmitDialogOpen}
           />
-        ))}
-      </div>
+        </div>
+        <div className="px-4 pb-4">
+          <h2 className="text-xl font-bold text-white drop-shadow-md">{stepDefinition.title}</h2>
+          <p className="text-sm text-white/80">{stepDefinition.description}</p>
 
-      {/* Conditionally render the section only on the invoice level slide */}
-      {currentStepId === "invoice-level-discounts-taxes" && (
-        <>
-          "Invoice Level Discounts and Taxes"
-          <div className="w-full flex flex-col gap-2 mt-4">
-            <label className="font-medium text-primary-dark">
-              Invoice Discount
-            </label>
-            <input
-              className="border border-primary-light rounded-md p-2"
-              type="number"
-              step="0.01"
-              value={invoiceData.invoiceDiscount}
-              onChange={(e) =>
-                handleInvoiceDiscountChange(parseFloat(e.target.value))
-              }
-            />
-
-            <label className="font-medium text-primary-dark">
-              Invoice Taxes
-            </label>
-            <input
-              className="border border-primary-light rounded-md p-2"
-              type="number"
-              step="0.01"
-              value={invoiceData.invoiceTaxes}
-              onChange={(e) =>
-                handleInvoiceTaxesChange(parseFloat(e.target.value))
-              }
-            />
+          {/* Render fields dynamically */}
+          <div className="w-full flex flex-col gap-3 mt-4">
+            {stepDefinition.fields.map((field: FieldDefinition) => (
+              <FormField
+                key={field.name}
+                field={field}
+                invoiceData={invoiceData}
+                setInvoiceData={setInvoiceData}
+              />
+            ))}
           </div>
-        </>
-      )}
+
+          {/* Conditionally render the section only on the invoice level slide */}
+          {currentStepId === "invoice-level-discounts-taxes" && (
+            <>
+              <div className="text-white/90 font-semibold mt-6">Invoice Level Discounts and Taxes</div>
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+                <div>
+                  <label className="font-medium text-white/90">Invoice Discount</label>
+                  <input
+                    className="mt-1 w-full border border-white/20 rounded-md p-2 bg-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400/60"
+                    type="number"
+                    step="0.01"
+                    value={invoiceData.invoiceDiscount}
+                    onChange={(e) =>
+                      handleInvoiceDiscountChange(parseFloat(e.target.value))
+                    }
+                  />
+                </div>
+
+                <div>
+                  <label className="font-medium text-white/90">Invoice Taxes</label>
+                  <input
+                    className="mt-1 w-full border border-white/20 rounded-md p-2 bg-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-violet-400/60"
+                    type="number"
+                    step="0.01"
+                    value={invoiceData.invoiceTaxes}
+                    onChange={(e) =>
+                      handleInvoiceTaxesChange(parseFloat(e.target.value))
+                    }
+                  />
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -433,7 +437,7 @@ function FormField({
 
   return (
     <div className="flex flex-col">
-      <label className="font-medium" htmlFor={field.name}>
+      <label className="font-medium text-white/90" htmlFor={field.name}>
         {field.label !== "Invoice-Level Discount" &&
           field.label !== "Invoice-Level Taxes" &&
           field.label}
@@ -443,7 +447,7 @@ function FormField({
       {field.type === "string" && (
         <input
           id={field.name}
-          className="border rounded p-1"
+          className="mt-1 border border-white/20 rounded-md p-2 bg-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal-400/60"
           type="text"
           required={field.required}
           value={invoiceData[field.name] ?? field.defaultValue ?? ""}
@@ -453,7 +457,7 @@ function FormField({
       {field.type === "date" && (
         <input
           id={field.name}
-          className="border rounded p-1"
+          className="mt-1 border border-white/20 rounded-md p-2 bg-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-400/60"
           type="date"
           required={field.required}
           value={invoiceData[field.name] ?? field.defaultValue ?? ""}
@@ -463,7 +467,7 @@ function FormField({
       {field.type === "number" && (
         <input
           id={field.name}
-          className="border rounded p-1"
+          className="mt-1 border border-white/20 rounded-md p-2 bg-white/10 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-violet-400/60"
           type="number"
           required={field.required}
           value={invoiceData[field.name] ?? field.defaultValue ?? ""}
@@ -514,14 +518,15 @@ function Footer({
               disabled={isDisabledStep}
               onClick={prevStep}
               size="sm"
-              variant="outline"
-              className="border-accent text-accent hover:bg-accent/10"
+              variant="gradient"
+              className="from-violet-400 via-teal-400 to-amber-400"
             >
               Prev
             </Button>
             <Button
               size="sm"
-              className="bg-accent text-accent-foreground hover:bg-accent/90"
+              variant="gradient"
+              className="from-amber-400 via-rose-400 to-violet-400"
               onClick={() => {
                 if (isLastStep) {
                   handleSubmit(invoiceData, setIsSubmitDialogOpen);
