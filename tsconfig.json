@@ -1,11 +1,9 @@
 {
   "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
   "compilerOptions": {
     "baseUrl": ".",
+    "jsx": "preserve",
+    "moduleResolution": "bundler",
     "paths": {
       "@/*": ["./src/*"]
     }
