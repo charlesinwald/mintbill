@@ -3,7 +3,12 @@
     "allow": [
       "Bash(tree:*)",
       "Bash(npm run dev:*)",
-      "Bash(npm run lint)"
+      "Bash(npm run lint)",
+      "Bash(yarn install)",
+      "Bash(yarn dev)",
+      "Bash(pkill:*)",
+      "Bash(yarn build)",
+      "Bash(yarn add:*)"
     ],
     "deny": [],
     "ask": []

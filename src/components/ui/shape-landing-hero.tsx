@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 
 function ElegantShape({
@@ -81,7 +81,7 @@ function HeroGeometric({
   title1?: string;
   title2?: string;
 }) {
-    const navigate = useNavigate();
+    const router = useRouter();
 
   const fadeUpVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -187,7 +187,7 @@ function HeroGeometric({
             initial="hidden"
             animate="visible"
           >
-            <button onClick={() => navigate("/app")}>Go to app</button>
+            <button onClick={() => router.push("/app")}>Go to app</button>
 
             {/* <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
                             Crafting exceptional digital experiences through
