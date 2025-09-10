@@ -873,13 +873,13 @@ const StepIcon = React.forwardRef<HTMLDivElement, StepIconProps>(
         if (isError && isKeepError) {
           return (
             <div key="icon">
-              <X className={cn(iconVariants({ size }))} />
+              <X className={cn(iconVariants({ size }), "cursor-pointer")} />
             </div>
           );
         }
         return (
           <div key="check-icon">
-            <Check className={cn(iconVariants({ size }))} />
+            <Check className={cn(iconVariants({ size }), "cursor-pointer")} />
           </div>
         );
       }
@@ -894,20 +894,20 @@ const StepIcon = React.forwardRef<HTMLDivElement, StepIconProps>(
         if (isError) {
           return (
             <div key="icon">
-              <X className={cn(iconVariants({ size }))} />
+              <X className={cn(iconVariants({ size }), "cursor-pointer")} />
             </div>
           );
         }
         if (isLoading) {
           return (
-            <Loader2 className={cn(iconVariants({ size }), "animate-spin")} />
+            <Loader2 className={cn(iconVariants({ size }), "animate-spin cursor-pointer")} />
           );
         }
       }
       if (Icon) {
         return (
           <div key="step-icon">
-            <Icon className={cn(iconVariants({ size }))} />
+            <Icon className={cn(iconVariants({ size }), "cursor-pointer")} />
           </div>
         );
       }
@@ -915,7 +915,7 @@ const StepIcon = React.forwardRef<HTMLDivElement, StepIconProps>(
         <span
           ref={ref}
           key="label"
-          className={cn("text-md text-center font-medium")}
+          className={cn("text-md text-center font-medium cursor-pointer")}
         >
           {(index || 0) + 1}
         </span>

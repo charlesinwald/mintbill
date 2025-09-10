@@ -85,7 +85,12 @@ export default function App() {
             </DialogHeader>
           </DialogContent>
         </Dialog>
-        <Stepper initialStep={0} steps={steps} orientation="vertical">
+        <Stepper 
+          initialStep={0} 
+          steps={steps} 
+          orientation="vertical"
+          onClickStep={(step, setStep) => setStep(step)}
+        >
           {/* <Footer /> */}
           {steps.map((stepProps) => {
             // stepProps.meta contains the entire JSON definition for this step
