@@ -75,4 +75,39 @@ body {
   box-sizing: inherit;
 }
 
+/* Custom scrollbar styles to match emerald theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.3);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.5);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgba(16, 185, 129, 0.7);
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(16, 185, 129, 0.3) rgba(255, 255, 255, 0.03);
+}
+
 

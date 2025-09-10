@@ -74,7 +74,7 @@ export default function App() {
   return (
     <div className="min-h-screen w-full bg-emerald-900 overflow-auto">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
-      <div className="relative z-10 flex flex-col gap-4 p-4 min-h-screen">
+      <div className="relative z-10 flex flex-col gap-8 p-6 md:p-8 min-h-screen">
         <Dialog open={isSubmitDialogOpen} onOpenChange={setIsSubmitDialogOpen}>
           <DialogContent>
             <DialogHeader>
@@ -151,7 +151,7 @@ function DynamicStepContent({
 
   return (
     <div className="flex flex-col flex-1 gap-4 items-center justify-start">
-      <div className="flex-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-md shadow-xl shadow-black/20 animate-page-in-up overflow-y-auto">
+      <div className="flex-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-md shadow-xl shadow-black/20 animate-step-fade-in overflow-y-auto transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]" style={{maxHeight: 'calc(100vh - 200px)'}}>
         <div className="px-4 pt-4 pb-4">
           <h2 className="text-xl font-bold text-white drop-shadow-md">
             {stepDefinition.title}
@@ -159,7 +159,7 @@ function DynamicStepContent({
           <p className="text-sm text-white/80">{stepDefinition.description}</p>
 
           {/* Render fields dynamically */}
-          <div className="w-full flex flex-col gap-3 mt-4">
+          <div className="w-full flex flex-col gap-6 mt-6 animate-step-slide-up">
             {stepDefinition.fields.map((field: FieldDefinition) => (
               <FormField
                 key={field.name}
@@ -176,13 +176,13 @@ function DynamicStepContent({
               <div className="text-white/90 font-semibold mt-6">
                 Invoice Level Discounts and Taxes
               </div>
-              <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
                 <div>
                   <label className="font-medium text-white/90">
                     Invoice Discount
                   </label>
                   <input
-                    className="mt-1 w-full border border-white/[0.08] rounded-md p-2 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
+                    className="mt-2 w-full border border-white/[0.08] rounded-lg px-4 py-3 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
                     type="number"
                     step="0.01"
                     value={invoiceData.invoiceDiscount}
@@ -197,7 +197,7 @@ function DynamicStepContent({
                     Invoice Taxes
                   </label>
                   <input
-                    className="mt-1 w-full border border-white/[0.08] rounded-md p-2 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
+                    className="mt-2 w-full border border-white/[0.08] rounded-lg px-4 py-3 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
                     type="number"
                     step="0.01"
                     value={invoiceData.invoiceTaxes}
@@ -213,7 +213,7 @@ function DynamicStepContent({
       </div>
 
       {/* Navigation buttons below the form */}
-      <div className="w-full flex justify-end">
+      <div className="w-full flex justify-end animate-step-slide-up mt-8">
         <Footer
           invoiceData={invoiceData}
           setIsSubmitDialogOpen={setIsSubmitDialogOpen}
@@ -285,15 +285,15 @@ function FormField({
           {field.required ? " *" : ""}
         </label>
 
-        <div className="border border-white/[0.08] rounded-lg p-4 bg-white/[0.03] backdrop-blur-sm">
+        <div className="border border-white/[0.08] rounded-lg p-6 bg-white/[0.03] backdrop-blur-sm">
           {(invoiceData.items || []).length === 0 ? (
-            <div className="text-center text-white/70 py-4">
+            <div className="text-center text-white/70 py-8">
               No items added yet. Click the button below to add your first item.
             </div>
           ) : (
             <>
               {/* Header */}
-              <div className="grid grid-cols-12 gap-4 mb-2 font-medium text-sm text-white/70">
+              <div className="hidden md:grid grid-cols-12 gap-4 mb-4 font-medium text-sm text-white/70">
                 <div className="col-span-3">Description</div>
                 <div className="col-span-2">Type</div>
                 <div className="col-span-2">Quantity</div>
@@ -302,15 +302,16 @@ function FormField({
                 <div className="col-span-1"></div>
               </div>
 
-              {/* Items */}
-              {(invoiceData.items || []).map((item: any, index: number) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-12 gap-4 items-center py-2 border-b border-white/[0.08] last:border-b-0"
-                >
+              {/* Desktop Items Table */}
+              <div className="hidden md:block">
+                {(invoiceData.items || []).map((item: any, index: number) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-12 gap-4 items-center py-4 border-b border-white/[0.08] last:border-b-0"
+                  >
                   <div className="col-span-3">
                     <input
-                      className="w-full px-3 py-2 border border-white/[0.08] rounded-md bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
+                      className="w-full px-3 py-2.5 border border-white/[0.08] rounded-lg bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
                       type="text"
                       placeholder="Item description"
                       value={item.description || ""}
@@ -321,7 +322,7 @@ function FormField({
                   </div>
                   <div className="col-span-2">
                     <select
-                      className="w-full px-3 py-2 border border-white/[0.08] rounded-md bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
+                      className="w-full px-3 py-2.5 border border-white/[0.08] rounded-lg bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
                       value={item.itemType || "product"}
                       onChange={(e) =>
                         handleItemChange(index, "itemType", e.target.value)
@@ -333,7 +334,7 @@ function FormField({
                   </div>
                   <div className="col-span-2">
                     <input
-                      className="w-full px-3 py-2 border border-white/[0.08] rounded-md bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
+                      className="w-full px-3 py-2.5 border border-white/[0.08] rounded-lg bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
                       type="number"
                       min="1"
                       placeholder="Qty"
@@ -349,7 +350,7 @@ function FormField({
                   </div>
                   <div className="col-span-2">
                     <input
-                      className="w-full px-3 py-2 border border-white/[0.08] rounded-md bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
+                      className="w-full px-3 py-2.5 border border-white/[0.08] rounded-lg bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
                       type="number"
                       step="0.01"
                       placeholder="Unit Price"
@@ -365,7 +366,7 @@ function FormField({
                   </div>
                   <div className="col-span-2">
                     <input
-                      className="w-full px-3 py-2 border border-white/[0.08] rounded-md bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
+                      className="w-full px-3 py-2.5 border border-white/[0.08] rounded-lg bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
                       type="number"
                       step="0.01"
                       placeholder="Discount"
@@ -381,7 +382,7 @@ function FormField({
                   </div>
                   <div className="col-span-1 text-center">
                     <button
-                      className="text-white/70 hover:text-white p-2 rounded-full hover:bg-white/[0.08] border border-transparent hover:border-white/[0.08] backdrop-blur-sm transition-all duration-300"
+                      className="text-white/70 hover:text-white p-3 rounded-full hover:bg-white/[0.08] border border-transparent hover:border-white/[0.08] backdrop-blur-sm transition-all duration-300"
                       onClick={() => removeItem(index)}
                       title="Remove item"
                     >
@@ -399,14 +400,129 @@ function FormField({
                       </svg>
                     </button>
                   </div>
-                </div>
-              ))}
+                  </div>
+                ))}
+              </div>
+              
+              {/* Mobile Items Cards */}
+              <div className="md:hidden space-y-4">
+                {(invoiceData.items || []).map((item: any, index: number) => (
+                  <div
+                    key={index}
+                    className="p-4 border border-white/[0.08] rounded-lg bg-white/[0.02] backdrop-blur-sm space-y-3"
+                  >
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-white/90">Item #{index + 1}</span>
+                      <button
+                        className="text-white/70 hover:text-white p-2 rounded-full hover:bg-white/[0.08] border border-transparent hover:border-white/[0.08] backdrop-blur-sm transition-all duration-300"
+                        onClick={() => removeItem(index)}
+                        title="Remove item"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-xs font-medium text-white/70 mb-1">Description</label>
+                        <input
+                          className="w-full px-3 py-2.5 border border-white/[0.08] rounded-lg bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
+                          type="text"
+                          placeholder="Item description"
+                          value={item.description || ""}
+                          onChange={(e) =>
+                            handleItemChange(index, "description", e.target.value)
+                          }
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-medium text-white/70 mb-1">Type</label>
+                          <select
+                            className="w-full px-3 py-2.5 border border-white/[0.08] rounded-lg bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
+                            value={item.itemType || "product"}
+                            onChange={(e) =>
+                              handleItemChange(index, "itemType", e.target.value)
+                            }
+                          >
+                            <option value="product">Product</option>
+                            <option value="service">Service</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-white/70 mb-1">Quantity</label>
+                          <input
+                            className="w-full px-3 py-2.5 border border-white/[0.08] rounded-lg bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
+                            type="number"
+                            min="1"
+                            placeholder="Qty"
+                            value={item.quantity || 1}
+                            onChange={(e) =>
+                              handleItemChange(
+                                index,
+                                "quantity",
+                                parseInt(e.target.value)
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-medium text-white/70 mb-1">Unit Price</label>
+                          <input
+                            className="w-full px-3 py-2.5 border border-white/[0.08] rounded-lg bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
+                            type="number"
+                            step="0.01"
+                            placeholder="Unit Price"
+                            value={item.unitPrice || 0}
+                            onChange={(e) =>
+                              handleItemChange(
+                                index,
+                                "unitPrice",
+                                parseFloat(e.target.value)
+                              )
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-white/70 mb-1">Discount</label>
+                          <input
+                            className="w-full px-3 py-2.5 border border-white/[0.08] rounded-lg bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
+                            type="number"
+                            step="0.01"
+                            placeholder="Discount"
+                            value={item.itemLevelDiscount || 0}
+                            onChange={(e) =>
+                              handleItemChange(
+                                index,
+                                "itemLevelDiscount",
+                                parseFloat(e.target.value)
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </>
           )}
 
-          <div className="mt-4">
+          <div className="mt-6">
             <button
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-emerald-300 border border-emerald-400/30 rounded-md hover:bg-emerald-500/20 hover:border-emerald-400/50 backdrop-blur-sm transition-all duration-300 shadow-lg shadow-emerald-500/10"
+              className="flex items-center gap-2 px-6 py-3 text-sm font-medium text-emerald-300 border border-emerald-400/30 rounded-lg hover:bg-emerald-500/20 hover:border-emerald-400/50 backdrop-blur-sm transition-all duration-300 shadow-lg shadow-emerald-500/10"
               onClick={addItem}
             >
               <svg
@@ -428,7 +544,7 @@ function FormField({
 
         {/* Optional: Show total */}
         {(invoiceData.items || []).length > 0 && (
-          <div className="text-right text-sm text-white/70">
+          <div className="text-right text-sm text-white/70 mt-4 p-4 border-t border-white/[0.08]">
             Total: {invoiceData.currency || "$"}
             {(invoiceData.items || [])
               .reduce(
@@ -464,7 +580,7 @@ function FormField({
       {field.type === "string" && (
         <input
           id={field.name}
-          className="mt-1 border border-white/[0.08] rounded-md p-2 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
+          className="mt-2 border border-white/[0.08] rounded-lg px-4 py-3 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
           type="text"
           required={field.required}
           value={invoiceData[field.name] ?? field.defaultValue ?? ""}
@@ -474,7 +590,7 @@ function FormField({
       {field.type === "date" && (
         <input
           id={field.name}
-          className="mt-1 border border-white/[0.08] rounded-md p-2 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
+          className="mt-2 border border-white/[0.08] rounded-lg px-4 py-3 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
           type="date"
           required={field.required}
           value={invoiceData[field.name] ?? field.defaultValue ?? ""}
@@ -484,7 +600,7 @@ function FormField({
       {field.type === "number" && (
         <input
           id={field.name}
-          className="mt-1 border border-white/[0.08] rounded-md p-2 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm"
+          className="mt-2 border border-white/[0.08] rounded-lg px-4 py-3 bg-white/[0.03] text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400/60 backdrop-blur-sm transition-all duration-200"
           type="number"
           required={field.required}
           value={invoiceData[field.name] ?? field.defaultValue ?? ""}
@@ -513,6 +629,7 @@ function Footer({
     isDisabledStep,
   } = useStepper();
 
+
   return (
     <>
       {hasCompletedAllSteps && (
@@ -520,7 +637,7 @@ function Footer({
           <h1 className="text-xl">Woohoo! All steps completed! 🎉</h1>
         </div>
       )}
-      <div className="flex w-full justify-end gap-2">
+      <div className="flex w-full justify-end gap-3 relative z-20">
         {hasCompletedAllSteps ? (
           <Button
             size="sm"
@@ -532,10 +649,11 @@ function Footer({
         ) : (
           <>
             <Button
+              type="button"
               disabled={isDisabledStep}
               onClick={prevStep}
               size="sm"
-              className="bg-white/[0.03] border border-white/[0.08] text-white/90 hover:bg-white/[0.08] hover:border-white/[0.15] backdrop-blur-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-white/[0.03] border border-white/[0.08] text-white/90 hover:bg-white/[0.08] hover:border-white/[0.15] backdrop-blur-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed relative z-10"
             >
               Prev
             </Button>
@@ -549,14 +667,13 @@ function Footer({
               />
             ) : (
               <Button
+                type="button"
                 size="sm"
-                className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 hover:bg-emerald-500/30 hover:border-emerald-400/50 backdrop-blur-sm transition-all duration-300 shadow-lg shadow-emerald-500/10"
-                onClick={() => {
-                  if (isOptionalStep) {
-                    nextStep();
-                  } else {
-                    nextStep();
-                  }
+                className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 hover:bg-emerald-500/30 hover:border-emerald-400/50 backdrop-blur-sm transition-all duration-300 shadow-lg shadow-emerald-500/10 relative z-10"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  nextStep();
                 }}
               >
                 {isOptionalStep ? "Skip" : "Next"}

@@ -49,7 +49,12 @@ function StepperProvider({ value, children }: StepperContextProviderProps) {
   const [activeStep, setActiveStep] = React.useState(value.initialStep);
 
   const nextStep = () => {
-    setActiveStep((prev) => prev + 1);
+    console.log("nextStep called, current activeStep:", activeStep);
+    setActiveStep((prev) => {
+      const newStep = prev + 1;
+      console.log("Setting new step to:", newStep);
+      return newStep;
+    });
   };
 
   const prevStep = () => {
@@ -198,9 +203,9 @@ interface StepperProps extends StepOptions {
 }
 
 const VARIABLE_SIZES = {
-  sm: "36px",
-  md: "40px",
-  lg: "44px",
+  sm: "44px",
+  md: "48px",
+  lg: "52px",
 };
 
 const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
@@ -291,7 +296,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
               "--step-icon-size":
                 variables?.["--step-icon-size"] ||
                 `${VARIABLE_SIZES[size || "md"]}`,
-              "--step-gap": variables?.["--step-gap"] || "8px",
+              "--step-gap": variables?.["--step-gap"] || "16px",
             } as React.CSSProperties
           }
           {...rest}
@@ -362,7 +367,7 @@ function HorizontalContent({ children }: { children: React.ReactNode }) {
     <div className="w-full overflow-hidden">
       <div
         ref={contentRef}
-        className="flex transition-transform duration-300 ease-in-out"
+        className="flex transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
       >
         {React.Children.map(childArr, (node) => {
           if (!React.isValidElement(node)) return null;
@@ -480,7 +485,7 @@ type VerticalStepProps = StepSharedProps & {
 
 const verticalStepVariants = cva(
   [
-    "flex flex-col relative transition-all duration-200",
+    "flex flex-col relative transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]",
     "data-[completed=true]:[&:not(:last-child)]:after:bg-primary",
     "data-[invalid=true]:[&:not(:last-child)]:after:bg-destructive",
   ],
@@ -488,13 +493,13 @@ const verticalStepVariants = cva(
     variants: {
       variant: {
         circle: cn(
-          "[&:not(:last-child)]:gap-[var(--step-gap)] [&:not(:last-child)]:pb-[var(--step-gap)]",
+          "[&:not(:last-child)]:gap-6 [&:not(:last-child)]:pb-6",
           "[&:not(:last-child)]:after:bg-border [&:not(:last-child)]:after:w-[2px] [&:not(:last-child)]:after:content-['']",
           "[&:not(:last-child)]:after:inset-x-[calc(var(--step-icon-size)/2)]",
           "[&:not(:last-child)]:after:absolute",
           "[&:not(:last-child)]:after:top-[calc(var(--step-icon-size)+var(--step-gap))]",
           "[&:not(:last-child)]:after:bottom-[var(--step-gap)]",
-          "[&:not(:last-child)]:after:transition-all [&:not(:last-child)]:after:duration-200"
+          "[&:not(:last-child)]:after:transition-all [&:not(:last-child)]:after:duration-500 [&:not(:last-child)]:after:ease-[cubic-bezier(0.22,1,0.36,1)]"
         ),
         line: "flex-1 border-t-0 mb-4",
       },
@@ -571,7 +576,7 @@ const VerticalStep = React.forwardRef<HTMLDivElement, VerticalStepProps>(
                   });
                 }
               }}
-              className="data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up overflow-hidden"
+              className="data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up overflow-hidden transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]"
             >
               {children}
             </CollapsibleContent>
@@ -698,9 +703,9 @@ const HorizontalStep = React.forwardRef<HTMLDivElement, StepSharedProps>(
         aria-disabled={!hasVisited}
         className={cn(
           "stepper__horizontal-step",
-          "relative flex items-center transition-all duration-200",
+          "relative flex items-center transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]",
           "[&:not(:last-child)]:flex-1",
-          "[&:not(:last-child)]:after:transition-all [&:not(:last-child)]:after:duration-200",
+          "[&:not(:last-child)]:after:transition-all [&:not(:last-child)]:after:duration-500 [&:not(:last-child)]:after:ease-[cubic-bezier(0.22,1,0.36,1)]",
           "[&:not(:last-child)]:after:bg-border [&:not(:last-child)]:after:h-[2px] [&:not(:last-child)]:after:content-['']",
           "data-[completed=true]:[&:not(:last-child)]:after:bg-primary",
           "data-[invalid=true]:[&:not(:last-child)]:after:bg-destructive",
@@ -791,12 +796,13 @@ function StepButtonContainer({
       className={cn(
         "stepper__step-button-container",
         "pointer-events-none rounded-full p-0",
-        "size-[var(--step-icon-size)]",
+        "size-[var(--step-icon-size)] min-h-[44px] min-w-[44px]",
         "flex items-center justify-center rounded-full border-2",
-        "data-[clickable=true]:pointer-events-auto",
+        "data-[clickable=true]:pointer-events-auto data-[clickable=true]:cursor-pointer",
         "data-[active=true]:bg-primary data-[active=true]:border-primary data-[active=true]:text-primary-foreground",
         "data-[current=true]:border-primary data-[current=true]:bg-secondary",
         "data-[invalid=true]:bg-destructive data-[invalid=true]:border-destructive data-[invalid=true]:text-destructive-foreground",
+        "transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
         styles?.["step-button-container"]
       )}
       aria-current={isCurrentStep ? "step" : undefined}
