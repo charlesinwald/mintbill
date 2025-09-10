@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Step, Stepper, useStepper } from "@/components/ui/stepper";
 import { Button } from "@/components/ui/button";
+import { MagnetizeButton } from "@/components/ui/magnetize-button";
 import invoiceStepsJson from "./invoiceStructure.json";
 import type { StepItem } from "@/components/ui/stepper";
 import { generatePdf } from "./util";
@@ -144,15 +145,9 @@ function DynamicStepContent({
   };
 
   return (
-    <div className="flex flex-col flex-1 gap-4 items-center justify-start overflow-y-auto">
-      <div className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-md shadow-xl shadow-black/20 animate-page-in-up">
-        <div className="flex w-full justify-end p-2">
-          <Footer
-            invoiceData={invoiceData}
-            setIsSubmitDialogOpen={setIsSubmitDialogOpen}
-          />
-        </div>
-        <div className="px-4 pb-4">
+    <div className="flex flex-col flex-1 gap-4 items-center justify-start">
+      <div className="flex-1 w-full rounded-xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-md shadow-xl shadow-black/20 animate-page-in-up overflow-y-auto">
+        <div className="px-4 pt-4 pb-4">
           <h2 className="text-xl font-bold text-white drop-shadow-md">
             {stepDefinition.title}
           </h2>
@@ -210,6 +205,14 @@ function DynamicStepContent({
             </>
           )}
         </div>
+      </div>
+
+      {/* Navigation buttons below the form */}
+      <div className="w-full flex justify-end">
+        <Footer
+          invoiceData={invoiceData}
+          setIsSubmitDialogOpen={setIsSubmitDialogOpen}
+        />
       </div>
     </div>
   );
@@ -373,7 +376,7 @@ function FormField({
                   </div>
                   <div className="col-span-1 text-center">
                     <button
-                      className="text-white/70 hover:text-white p-2 rounded-full hover:bg-white/[0.05]"
+                      className="text-white/70 hover:text-white p-2 rounded-full hover:bg-white/[0.08] border border-transparent hover:border-white/[0.08] backdrop-blur-sm transition-all duration-300"
                       onClick={() => removeItem(index)}
                       title="Remove item"
                     >
@@ -398,7 +401,7 @@ function FormField({
 
           <div className="mt-4">
             <button
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white/80 border border-white/[0.08] rounded-md hover:bg-white/[0.05] backdrop-blur-sm"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-emerald-300 border border-emerald-400/30 rounded-md hover:bg-emerald-500/20 hover:border-emerald-400/50 backdrop-blur-sm transition-all duration-300 shadow-lg shadow-emerald-500/10"
               onClick={addItem}
             >
               <svg
@@ -517,7 +520,7 @@ function Footer({
           <Button
             size="sm"
             onClick={resetSteps}
-            className="bg-accent text-accent-foreground hover:bg-accent/90"
+            className="bg-white/[0.03] border border-white/[0.08] text-white/90 hover:bg-white/[0.08] hover:border-white/[0.15] backdrop-blur-sm transition-all duration-300"
           >
             Reset
           </Button>
@@ -527,25 +530,33 @@ function Footer({
               disabled={isDisabledStep}
               onClick={prevStep}
               size="sm"
-              variant="gradient"
-              className="from-violet-400 via-teal-400 to-amber-400"
+              className="bg-white/[0.03] border border-white/[0.08] text-white/90 hover:bg-white/[0.08] hover:border-white/[0.15] backdrop-blur-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Prev
             </Button>
-            <Button
-              size="sm"
-              variant="gradient"
-              className="from-amber-400 via-rose-400 to-violet-400"
-              onClick={() => {
-                if (isLastStep) {
-                  handleSubmit(invoiceData, setIsSubmitDialogOpen);
-                } else {
-                  nextStep();
-                }
-              }}
-            >
-              {isLastStep ? "Finish" : isOptionalStep ? "Skip" : "Next"}
-            </Button>
+            {isLastStep ? (
+              <MagnetizeButton
+                text="Finish"
+                particleCount={8}
+                attractRadius={40}
+                onClick={() => handleSubmit(invoiceData, setIsSubmitDialogOpen)}
+                className="min-w-32"
+              />
+            ) : (
+              <Button
+                size="sm"
+                className="bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 hover:bg-emerald-500/30 hover:border-emerald-400/50 backdrop-blur-sm transition-all duration-300 shadow-lg shadow-emerald-500/10"
+                onClick={() => {
+                  if (isOptionalStep) {
+                    nextStep();
+                  } else {
+                    nextStep();
+                  }
+                }}
+              >
+                {isOptionalStep ? "Skip" : "Next"}
+              </Button>
+            )}
           </>
         )}
       </div>

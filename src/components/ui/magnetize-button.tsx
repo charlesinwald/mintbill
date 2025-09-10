@@ -70,10 +70,10 @@ function MagnetizeButton({
         <Button
             className={cn(
                 "min-w-40 relative touch-none",
-                "bg-violet-100 dark:bg-violet-900",
-                "hover:bg-violet-200 dark:hover:bg-violet-800",
-                "text-violet-600 dark:text-violet-300",
-                "border border-violet-300 dark:border-violet-700",
+                "bg-emerald-100 dark:bg-emerald-900",
+                "hover:bg-emerald-200 dark:hover:bg-emerald-800",
+                "text-emerald-600 dark:text-emerald-300",
+                "border border-emerald-300 dark:border-emerald-700",
                 "transition-all duration-300",
                 className
             )}
@@ -91,7 +91,7 @@ function MagnetizeButton({
                     animate={particlesControl}
                     className={cn(
                         "absolute w-1.5 h-1.5 rounded-full",
-                        "bg-violet-400 dark:bg-violet-300",
+                        "bg-emerald-400 dark:bg-emerald-300",
                         "transition-opacity duration-300",
                         isAttracting ? "opacity-100" : "opacity-40"
                     )}
