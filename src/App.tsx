@@ -12,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./components/ui/dotted-dialog";
+import { HomeIcon } from "lucide-react";
 interface FieldDefinition {
   name: string;
   label: string;
@@ -75,6 +76,22 @@ export default function App() {
     <div className="min-h-screen w-full bg-emerald-900 overflow-auto">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
       <div className="relative z-10 flex flex-col gap-8 p-6 md:p-8 min-h-screen">
+        {/* Back to Landing Button - Upper Left */}
+        <div className="absolute top-6 right-6 z-30">
+          <Button
+            onClick={() => {
+              // Reset the stepper and optionally clear form data
+              setInvoiceData({ items: [], invoiceDiscount: 0, invoiceTaxes: 0 });
+              // You might want to navigate to a landing page here instead
+              // navigate to /
+              window.location.href = '/';
+            }}
+            size="sm"
+            className="bg-white/[0.03] border border-white/[0.08] text-white/90 hover:bg-white/[0.08] hover:border-white/[0.15] backdrop-blur-sm transition-all duration-300"
+          >
+            <HomeIcon />
+          </Button>
+        </div>
         <Dialog open={isSubmitDialogOpen} onOpenChange={setIsSubmitDialogOpen}>
           <DialogContent>
             <DialogHeader>
@@ -628,6 +645,7 @@ function Footer({
     isOptionalStep,
     isDisabledStep,
   } = useStepper();
+
 
 
   return (
